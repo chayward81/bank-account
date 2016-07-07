@@ -1,30 +1,28 @@
 //business logic
-function resetFields() {
-  $("input#new-first-name").val("");
-  $("input#new-last-name").val("");
-  $("input#new-street").val("");
-  $("input#new-city").val("");
-  $("input#new-state").val("");
+function Account(accountName, initialDeposit, balance) {
+  this.accountName = accountName;
+  this.initialDeposit = initialDeposit;
+  this.balance = balance;
 }
 
-function Contact(first, last, address, phoneNumber) {
-  this.firstName = first;
-  this.lastName = last;
-  this.addresses = [];
-  this.phoneNumber = phoneNumber;
-}
-function Address(street, city, state) {
-  this.street = street;
-  this.city = city;
-  this.state = state;
+function Manage(initialBalance, endBalance, depositAmount, withdrawAmount) {
+  this.initialBalance = initialBalance;
+  this.endBalance = endBalance;
+  this.depositAmount = depositAmount;
+  this.withdrawAmount = withdrawAmount;
 }
 
-Contact.prototype.fullName = function() {
-  return this.firstName + " " + this.lastName;
+Account.prototype.accountInfo = function() {
+  return this.accountName + " " + this.balance;
 }
 
-Address.prototype.fullAddress = function() {
-  return this.street + "," + this.city + "," +this.state;
+Manage.prototype.calculateBalance = function() {
+  if(this.depositAmount !== null && this.withdrawAmount === null) {
+    this.endBalance = this.initialBalance + this.depositAmount;
+  } else {
+    this.endBalance = this.initialBalance - this.withdrawAmount;
+  }
+  return this.endBalance;
 }
 
 
@@ -32,55 +30,27 @@ Address.prototype.fullAddress = function() {
 // user interface logic
 $(document).ready(function() {
 
-
-  $("#add-address").click(function() {
-    $("#new-addresses").append('<div class="new-address">' +
-      '<div class="form-group">' +
-      '<label for="new-street">Street</label>' +
-        '<input type="text" class="form-control new-street">' +
-      '</div>' +
-      '<div class="form-group">' +
-        '<label for="new-city">City</label>' +
-        '<input type="text" class="form-control new-city">' +
-      '</div>' +
-      '<div class="form-group">' +
-        '<label for="new-state">State</label>' +
-        '<input type="text" class="form-control new-state">' +
-      '</div>' +
-    '</div>');
+  $("form#new-account").submit(function(event) {
+    event.preventDefault();
+    var inputtedName = $("input#new-name").val();
+    var inputtedinitialDeposit = parseInt($("input#new-initialDeposit").val());
+    var newAccount = new Account(inputtedName, inputtedinitialDeposit);
+    $(".current-balance").text(inputtedinitialDeposit);
+    $("#sign-up").hide();
+    $("#show-balance").show();
   });
 
-  $("form#new-contact").submit(function(event) {
+  $("#show-balance").submit(function(event) {
     event.preventDefault();
+    $("#show-balance").hide();
+    $("#manage-money").show();
+  });
 
-    var inputtedFirstName = $("input#new-first-name").val();
-    var inputtedLastName = $("input#new-last-name").val();
-    var newContact = new Contact(inputtedFirstName, inputtedLastName);
-
-    $(".new-address").each(function() {
-      var inputtedStreet = $(this).find("input.new-street").val();
-      var inputtedCity = $(this).find("input.new-city").val();
-      var inputtedState = $(this).find("input.new-state").val();
-      var newAddress = new Address(inputtedStreet, inputtedCity, inputtedState
-      )
-      newContact.addresses.push(newAddress)
-    });
-
-    $("ul#contacts").append("<li><span class='contact'>" + newContact.fullName() + "</span></li>");
-
-    $(".contact").last().click(function() {
-      $("#show-contact").show();
-      $("#show-contact h2").text(newContact.firstName);
-      $(".first-name").text(newContact.firstName);
-      $(".last-name").text(newContact.lastName);
-      $("ul#addresses").text("");
-      newContact.addresses.forEach(function(address) {
-        $("ul#addresses").append("<li>" + address.fullAddress() + "</li>");
-      });
-
-    });
-
-    resetFields();
-
+  $("form#new-account").submit(function(event) {
+    event.preventDefault();
+    var inputteddepositAmount = parseInt($("input#new-deposit").val());
+    var inputtedwithdrawAmount = parseInt($("input#new-withdrawal").val());
+    var newBalance = new Manage(inputteddepositAmount, inputtedwithdrawAmount);
+    $("#show-balance").show();
   });
 });

@@ -1,12 +1,7 @@
-#show-contact {
+#manage-money {
   display: none;
 }
 
-.contact {
-  cursor: pointer;
-  color: #0088cc;
-}
-
-.contact.hover {
-  text-decoration: underline;
+#show-balance {
+  display: none;
 }

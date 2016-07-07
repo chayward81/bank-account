@@ -22,7 +22,7 @@
             <label for="new-initialDeposit">Initial Deposit</label>
             <input type="text" class="form-control" id="new-initialDeposit">
           </div>
-          <button type="submit" class="btn">Create Bank Account</button>
+          <button id="newAccount" button type="submit" class="btn">Create Bank Account</button>
         </form>
       </div>
 
@@ -37,15 +37,16 @@
             <label for="new-withdrawal">Withdrawal Amount</label>
             <input type="text" class="form-control" id="new-withdrawal">
           </div>
-          <button type="submit" class="btn">Submit</button>
+          <button id="newBalance" button type="submit" class="btn">Calculate Balance</button>
         </form>
-
-        <div id="show-balance">
-          <h2>Your bank account's balance</h2>
-
-
-        </div>
       </div>
+
+      <div id="show-balance">
+        <h2>Your bank account's balance</h2>
+        <p><span class="current-balance"></span>
+        <button id="showManage" button type="submit" class="btn">Start Managing Your Money</button>
+      </div>
+
     </div>
 
   </body>
